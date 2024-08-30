@@ -7,7 +7,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import type { IReadonlyTheme } from '@microsoft/sp-component-base';
 //import { escape } from '@microsoft/sp-lodash-subset';
 
-//import styles from './OnboarderTool2WebPart.module.scss';
+import styles from './OnboarderTool2WebPart.module.scss';
 import * as strings from 'OnboarderTool2WebPartStrings';
 import {SPHttpClient, SPHttpClientResponse} from '@microsoft/sp-http';
 
@@ -75,9 +75,9 @@ export default class OnboarderTool2WebPart extends BaseClientSideWebPart<IOnboar
   public render(): void  {
     this.domElement.innerHTML = `
     <div>
-    <p><strong> Onboarding Status Tracker </strong></p>
-    <div id="spListDiv"/> 
-    </div>
+      <p><strong> Onboarding Status Tracker </strong></p>
+      <div id="spListDiv" class="${styles.tableContainer}"></div> 
+    </div>  
     `
     this._renderList();
   }
