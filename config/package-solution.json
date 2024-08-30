@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "onboarder-tool-2-client-side-solution",
+    "id": "92dfc3b3-4064-43b2-882e-072d4d192ccf",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.19.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "onboarderTool2 description"
+      },
+      "longDescription": {
+        "default": "onboarderTool2 description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "onboarder-tool-2 Feature",
+        "description": "The feature that activates elements of the onboarder-tool-2 solution.",
+        "id": "85f8ae35-44d4-48b2-b6fa-3ebce92b3a31",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/onboarder-tool-2.sppkg"
+  }
+}
