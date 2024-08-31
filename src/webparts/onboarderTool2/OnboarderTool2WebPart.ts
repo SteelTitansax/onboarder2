@@ -33,16 +33,14 @@ export default class OnboarderTool2WebPart extends BaseClientSideWebPart<IOnboar
 
  
 
-  private _getListData(): Promise <SPOnboardAuxList>{
+  private _getListData(id : string ) : Promise <SPOnboardAuxList>{
 
-    return this.context.spHttpClient.get("https://t8656.sharepoint.com/sites/Sharepoint_Interaction/_api/web/lists/getbytitle('Poc_SharepointInteractionAux')/items"
-    ,SPHttpClient.configurations.v1)
+    return this.context.spHttpClient.get(`https://t8656.sharepoint.com/sites/Sharepoint_Interaction/_api/web/lists/getbytitle('Poc_SharepointInteractionAux')/items?$filter=Title eq '${id}'`,SPHttpClient.configurations.v1)
     .then((response: SPHttpClientResponse) => { return response.json()});
   }
 
-  private _renderList(): void {
-
-    this._getListData().then((response) => {
+  private _renderList(workerName : string): void {
+    this._getListData(workerName).then((response) => {
 
       let html: string = `<table width=100% style='border: 1px solid'><tr>
             <th>Name</th>
@@ -76,11 +74,59 @@ export default class OnboarderTool2WebPart extends BaseClientSideWebPart<IOnboar
     this.domElement.innerHTML = `
     <div>
       <p><strong> Onboarding Status Tracker </strong></p>
+      <label>Worker Name</label>
+      <input type="text" placeholder=" " id="workerName"/>
       <div id="spListDiv" class="${styles.tableContainer}"></div> 
     </div>  
     `
-    this._renderList();
+    this._urlPrepopulation();
+    const workerName = (document.getElementById("workerName") as HTMLInputElement).value
+    this._renderList(workerName);
   }
+
+  private _urlPrepopulation(): void {
+    var url = window.location.href;
+
+    // Define regex patterns for each parameter with values (textInput and dropdowns)
+    const patterns: { [key: string]: RegExp } = {
+      workerName: /[?&]workerName=([^&]+)/,
+    };
+
+    // Define the type for the extracted values
+    type ExtractedValues = {
+      [key: string]: string | null;
+    };
+
+    // Function to extract values using regex patterns
+    function extractValues(
+      url: string,
+      patterns: { [key: string]: RegExp }
+    ): ExtractedValues {
+      const values: ExtractedValues = {};
+      for (const key in patterns) {
+        const match = url.match(patterns[key]);
+        values[key] = match ? match[1] : null;
+      }
+      return values;
+    }
+
+    // Extract and print the values
+    const prepopulatedValues: ExtractedValues = extractValues(url, patterns);
+
+    for (var prepopulatedValue in prepopulatedValues) {
+      prepopulatedValues[prepopulatedValue] == undefined
+        ? (prepopulatedValues[prepopulatedValue] = "Insert worker name")
+        : prepopulatedValues[prepopulatedValue];
+      (
+        document.getElementById(`${prepopulatedValue}`) as HTMLInputElement
+      ).value = `${prepopulatedValues[prepopulatedValue]?.replace(
+        /%20/g,
+        " "
+      )}`;
+    }
+
+   
+}
 
   protected onInit(): Promise<void> {
     return this._getEnvironmentMessage().then(message => {
